@@ -35,36 +35,42 @@ BUILTIN_PROFILES: dict[str, ModelProfile] = {
         context_window=200_000,
         tokenizer_encoding="cl100k_base",
         max_output_tokens=4_096,
+        approximate_tokenizer=True,
     ),
     "claude-3-sonnet": ModelProfile(
         name="claude-3-sonnet",
         context_window=200_000,
         tokenizer_encoding="cl100k_base",
         max_output_tokens=8_192,
+        approximate_tokenizer=True,
     ),
     "claude-3-opus": ModelProfile(
         name="claude-3-opus",
         context_window=200_000,
         tokenizer_encoding="cl100k_base",
         max_output_tokens=4_096,
+        approximate_tokenizer=True,
     ),
     "claude-4-sonnet": ModelProfile(
         name="claude-4-sonnet",
         context_window=200_000,
         tokenizer_encoding="cl100k_base",
         max_output_tokens=64_000,
+        approximate_tokenizer=True,
     ),
     "gemini-1.5-pro": ModelProfile(
         name="gemini-1.5-pro",
         context_window=1_000_000,
         tokenizer_encoding="cl100k_base",
         max_output_tokens=8_192,
+        approximate_tokenizer=True,
     ),
     "gemini-2.0-flash": ModelProfile(
         name="gemini-2.0-flash",
         context_window=1_000_000,
         tokenizer_encoding="cl100k_base",
         max_output_tokens=8_192,
+        approximate_tokenizer=True,
     ),
 }
 

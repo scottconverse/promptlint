@@ -157,6 +157,10 @@ class ModelProfile(BaseModel):
     max_output_tokens: int = Field(
         ..., description="Typical max output tokens"
     )
+    approximate_tokenizer: bool = Field(
+        default=False,
+        description="True if the tokenizer is an approximation (provider does not publish native tokenizer)",
+    )
 
 
 class LintConfig(BaseModel):
