@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>promptlint — Static analysis for LLM prompts</title>
-    <meta name="description" content="Static analysis tool for LLM prompts. Catches token bloat, security vulnerabilities, hallucination risk, structural issues, and prompt smells. 33 built-in rules across 9 categories.">
+    <meta name="description" content="Static analysis tool for LLM prompts. Catches token bloat, security vulnerabilities, hallucination risk, structural issues, and prompt smells. 34 built-in rules across 9 categories.">
     <meta property="og:title" content="promptlint">
-    <meta property="og:description" content="Static analysis for LLM prompts — treats prompts as code. 33 built-in rules, pipeline analysis, model profiles, auto-fix, and CI integration.">
+    <meta property="og:description" content="Static analysis for LLM prompts — treats prompts as code. 34 built-in rules, pipeline analysis, model profiles, auto-fix, and CI integration.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://scottconverse.github.io/promptlint/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -404,11 +404,11 @@
 
 <div class="stats">
     <div class="stat">
-        <div class="stat-number">33</div>
+        <div class="stat-number">34</div>
         <div class="stat-label">Built-in Rules</div>
     </div>
     <div class="stat">
-        <div class="stat-number">9</div>
+        <div class="stat-number">10</div>
         <div class="stat-label">Rule Categories</div>
     </div>
     <div class="stat">
@@ -503,6 +503,11 @@
                         <td class="rule-cat">Gates</td>
                         <td class="rule-ids">PL080-083</td>
                         <td class="rule-desc">Conditional logic without enforcement, missing fallbacks, no evidence gates</td>
+                    </tr>
+                    <tr>
+                        <td class="rule-cat">Tokenizer</td>
+                        <td class="rule-ids">PL090</td>
+                        <td class="rule-desc">Warns when model profile uses an approximate tokenizer (Claude, Gemini)</td>
                     </tr>
                 </tbody>
             </table>

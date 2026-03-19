@@ -55,7 +55,7 @@ promptlint init
 | YAML | `.yaml`, `.yml` | `messages` list with `role`/`content` |
 | JSON | `.json` | OpenAI chat format or `prompt` string |
 
-## Rules (33 built-in)
+## Rules (34 built-in)
 
 | Category | IDs | What It Checks |
 |----------|-----|---------------|
@@ -68,6 +68,7 @@ promptlint init
 | Security | PL060-063 | PII in prompts, API keys, no output constraints, unbounded tool use |
 | Smells | PL070-074 | Ambiguous quantifiers, buried instructions, no examples, wall of text |
 | Gates | PL080-083 | Conditional logic without enforcement, missing fallbacks, no evidence gates |
+| Tokenizer | PL090 | Warns when model profile uses an approximate tokenizer (Claude, Gemini) |
 
 ## Configuration
 
