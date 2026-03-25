@@ -2,6 +2,12 @@
 
 Static analysis tool for LLM prompts — treats prompts as code.
 
+---
+
+> **Disclaimer:** This software is provided as-is, without warranty of any kind. `promptlint` is a static analysis tool — it identifies potential issues in prompt files but does not guarantee that analyzed prompts are secure, correct, or free of vulnerabilities. Lint results are advisory, not authoritative. Always apply your own judgment before relying on any automated analysis. See the [Terms of Service](docs/terms.html) for complete legal terms.
+
+---
+
 ## What It Does
 
 `promptlint` analyzes LLM prompts for:
