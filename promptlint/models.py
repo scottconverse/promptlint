@@ -1,6 +1,7 @@
 """Core data models for promptlint.
 
-All models use Pydantic v2 syntax with model_config and Field defaults.
+Shared models are imported from prompttools-core.
+Lint-specific models (Severity, LintViolation, LintConfig) remain here.
 """
 
 from __future__ import annotations
@@ -11,6 +12,16 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
+# Re-export shared models from prompttools-core so existing imports work
+from prompttools_core.models import (  # noqa: F401
+    Message,
+    ModelProfile,
+    PipelineStage,
+    PromptFile,
+    PromptFormat,
+    PromptPipeline,
+)
+
 
 class Severity(str, Enum):
     """Severity levels for lint violations."""
@@ -18,99 +29,6 @@ class Severity(str, Enum):
     ERROR = "error"
     WARNING = "warning"
     INFO = "info"
-
-
-class PromptFormat(str, Enum):
-    """Supported prompt file formats."""
-
-    TEXT = "text"       # .txt
-    MARKDOWN = "md"     # .md
-    YAML = "yaml"       # .yaml / .yml
-    JSON = "json"       # .json
-
-
-class Message(BaseModel):
-    """Represents a single turn within a prompt."""
-
-    model_config = {"frozen": False}
-
-    role: str = Field(..., description="One of system, user, assistant")
-    content: str = Field(..., description="The text content of the message")
-    line_start: int = Field(
-        ..., description="Line number where this message begins in the source file"
-    )
-    token_count: Optional[int] = Field(
-        default=None,
-        description="Token count, populated by the engine before rule evaluation",
-    )
-
-
-class PromptFile(BaseModel):
-    """Represents a single parsed prompt file loaded by the parser."""
-
-    model_config = {"frozen": False}
-
-    path: Path = Field(..., description="Absolute path to the source file")
-    format: PromptFormat = Field(..., description="Detected format enum")
-    raw_content: str = Field(..., description="Original unmodified file content")
-    messages: list[Message] = Field(
-        default_factory=list, description="Parsed list of messages"
-    )
-    variables: dict[str, str] = Field(
-        default_factory=dict,
-        description="Extracted template variables (e.g. {{variable}})",
-    )
-    metadata: dict[str, Any] = Field(
-        default_factory=dict,
-        description="Optional front-matter or top-level YAML/JSON metadata",
-    )
-    total_tokens: Optional[int] = Field(
-        default=None,
-        description="Total token count across all messages, populated by engine",
-    )
-
-
-class PipelineStage(BaseModel):
-    """Represents one stage in a prompt pipeline."""
-
-    model_config = {"frozen": False}
-
-    name: str = Field(..., description="Stage name (e.g. prior-art-search)")
-    prompt_file: PromptFile = Field(
-        ..., description="The parsed prompt file for this stage"
-    )
-    depends_on: list[str] = Field(
-        default_factory=list,
-        description="Names of stages whose output this stage consumes",
-    )
-    expected_output_tokens: Optional[int] = Field(
-        default=None,
-        description="Estimated output token count (for context growth analysis)",
-    )
-    persona: Optional[str] = Field(
-        default=None, description="Declared persona/role for this stage"
-    )
-
-
-class PromptPipeline(BaseModel):
-    """Represents an ordered set of prompt files that form a multi-stage pipeline."""
-
-    model_config = {"frozen": False}
-
-    name: str = Field(..., description="Pipeline name")
-    stages: list[PipelineStage] = Field(
-        default_factory=list, description="Ordered list of stages"
-    )
-    manifest_path: Path = Field(
-        ..., description="Path to the .promptlint-pipeline.yaml manifest"
-    )
-    total_tokens: Optional[int] = Field(
-        default=None, description="Sum of all stage token counts"
-    )
-    cumulative_tokens: Optional[list[int]] = Field(
-        default=None,
-        description="Running total at each stage (for context window analysis)",
-    )
 
 
 class LintViolation(BaseModel):
@@ -139,27 +57,6 @@ class LintViolation(BaseModel):
     fixable: bool = Field(
         default=False,
         description="Whether this violation can be auto-fixed",
-    )
-
-
-class ModelProfile(BaseModel):
-    """Built-in model configuration for context-aware linting."""
-
-    model_config = {"frozen": True}
-
-    name: str = Field(..., description="Model identifier")
-    context_window: int = Field(
-        ..., description="Maximum context window in tokens"
-    )
-    tokenizer_encoding: str = Field(
-        ..., description="tiktoken encoding to use"
-    )
-    max_output_tokens: int = Field(
-        ..., description="Typical max output tokens"
-    )
-    approximate_tokenizer: bool = Field(
-        default=False,
-        description="True if the tokenizer is an approximation (provider does not publish native tokenizer)",
     )
 
 

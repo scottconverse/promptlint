@@ -3,6 +3,8 @@
 Walks up the directory tree to find ``.promptlint.yaml``, parses it,
 merges with built-in defaults and CLI overrides, and optionally applies
 a model profile.
+
+Uses prompttools-core for profile lookups.
 """
 
 from __future__ import annotations
@@ -13,7 +15,7 @@ from typing import Any
 import yaml
 
 from promptlint.models import LintConfig
-from promptlint.profiles.models import BUILTIN_PROFILES, get_profile
+from prompttools_core.profiles import BUILTIN_PROFILES, get_profile
 
 _CONFIG_FILENAME = ".promptlint.yaml"
 
@@ -135,7 +137,7 @@ def _apply_model_profile(config: LintConfig) -> LintConfig:
         return config
 
     updates: dict[str, Any] = {
-        "tokenizer_encoding": profile.tokenizer_encoding,
+        "tokenizer_encoding": profile.encoding,
         "context_window": profile.context_window,
         "token_warn_threshold": int(profile.context_window * 0.5),
         "token_error_threshold": int(profile.context_window * 0.8),
@@ -145,13 +147,7 @@ def _apply_model_profile(config: LintConfig) -> LintConfig:
 
 
 def _apply_cli_overrides(config: LintConfig, overrides: dict[str, Any]) -> LintConfig:
-    """Apply CLI flag overrides on top of the current config.
-
-    Recognized keys mirror CLI option names:
-      - ``model``, ``select``, ``ignore``, ``format``, ``min_severity``,
-        ``tokenizer_encoding``, ``token_warn_threshold``,
-        ``token_error_threshold``, ``context_window``.
-    """
+    """Apply CLI flag overrides on top of the current config."""
     if not overrides:
         return config
 
@@ -181,10 +177,8 @@ def _apply_cli_overrides(config: LintConfig, overrides: dict[str, Any]) -> LintC
             existing.extend(overrides["ignore"])
         updates["ignored_rules"] = existing
 
-    # --select restricts to only the listed rules (implemented via rule_overrides
-    # in the engine, but we store the selection here for engine to use)
+    # --select restricts to only the listed rules
     if "select" in overrides and overrides["select"]:
-        # Store as a special key; the engine reads it to filter
         pass  # handled at engine level, not config level
 
     if "exclude_patterns" in overrides and overrides["exclude_patterns"]:
@@ -213,19 +207,6 @@ def load_config(
       2. ``.promptlint.yaml`` found by walking up from *target_path*
       3. Model profile defaults (if ``model`` is specified)
       4. Built-in defaults
-
-    Parameters
-    ----------
-    target_path:
-        The file or directory being linted. Used as the starting point
-        for config file discovery.
-    cli_overrides:
-        Optional dict of CLI flag values to layer on top.
-
-    Returns
-    -------
-    LintConfig
-        The fully resolved configuration.
     """
     config = get_default_config()
 

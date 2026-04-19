@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "promptlint"
-version = "0.2.1"
+version = "0.3.0"
 description = "Static analysis tool for LLM prompts — treats prompts as code"
 readme = "README.md"
 license = {text = "MIT"}
@@ -25,6 +25,7 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
+    "prompttools-core>=1.0,<2.0",
     "typer[all]>=0.12",
     "pydantic>=2.0",
     "pyyaml>=6.0",
