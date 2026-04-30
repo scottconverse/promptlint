@@ -1,0 +1,65 @@
+task_id: T001
+workflow_id: workflow-prompt-quality-pilot
+title: Workflow prompt rule implementation
+role: worker
+objective: Add a narrow promptlint rule for weak AI-agent workflow prompts, focusing
+  on unresolved placeholder text and missing workflow contract elements without redesigning
+  the rule system.
+background: Implement the smallest useful rule change in promptlint's existing rule
+  model. Prefer extending the gates category with one focused workflow-prompt rule
+  or equivalent narrow coverage if similar rules already exist.
+allowed_paths:
+- promptlint/rules
+- promptlint/models.py
+- promptlint/rules/__init__.py
+forbidden_paths:
+- tests
+- README.md
+required_context:
+- promptlint/rules/gates.py
+- promptlint/rules/pipeline.py
+- promptlint/rules/smells.py
+- promptlint/core/engine.py
+- git worktree C:\Users\scott\OneDrive\Desktop\Claude\promptlint-worktrees\t001
+inputs:
+- Existing PL080-PL083 gate rules
+- Pilot goal and success criteria from workflow.yaml
+expected_outputs:
+- One narrow rule implementation or rule coverage improvement in promptlint/rules
+- Registration updates needed for promptlint to discover the rule cleanly
+output_schema:
+  task_id: T001
+  workflow_id: workflow-prompt-quality-pilot
+  status: blocked
+  summary: Populate this file after the worker run completes.
+  files_changed: []
+  commands_run: []
+  artifacts_created: []
+  deviations_from_contract: []
+  risks_or_concerns: []
+  human_review_needed: []
+  next_recommended_step: Run the worker prompt in a Codex worktree thread.
+acceptance_criteria:
+- Detect unresolved placeholder text or missing workflow prompt contract elements relevant to AI-agent workflow prompts.
+- Keep the change narrow and aligned with promptlint's existing rule architecture.
+- Avoid touching tests or docs in this task.
+validation_commands:
+- python -m pytest tests/rules/test_gates.py
+- python -m promptlint.cli rules --format json
+constraints:
+- Work only in the T001 worktree.
+- If similar rules already exist, improve the narrowest adjacent rule path instead of inventing a broad new subsystem.
+forbidden_behaviors:
+- Do not broaden scope.
+- Do not modify forbidden paths.
+ - Do not redesign promptlint or introduce unrelated rule families.
+estimated_complexity: medium
+parallel_safe: true
+depends_on: []
+failure_codes:
+- missing_context
+- validation_failed
+- blocked_on_dependency
+ - scope_creep
+handoff_instructions: Write the result file, summarize any deviations, and hand off
+  to the judge.

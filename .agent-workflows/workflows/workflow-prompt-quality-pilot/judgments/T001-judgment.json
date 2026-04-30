@@ -1,0 +1,30 @@
+{
+  "task_id": "T001",
+  "workflow_id": "workflow-prompt-quality-pilot",
+  "verdict": "accept_with_notes",
+  "score": 89,
+  "criteria_results": [
+    {
+      "criterion": "Detect unresolved placeholder text or missing workflow prompt contract elements relevant to AI-agent workflow prompts.",
+      "status": "pass",
+      "evidence": "PL084 targets workflow-like prompts and flags unresolved placeholders plus missing role, scope, output, validation, and stop-condition elements."
+    },
+    {
+      "criterion": "Keep the change narrow and aligned with promptlint's existing rule architecture.",
+      "status": "pass",
+      "evidence": "The worker extended the existing gates module and normal built-in rule registry without introducing a new subsystem."
+    },
+    {
+      "criterion": "Avoid touching tests or docs in this task.",
+      "status": "pass",
+      "evidence": "The slice only touched promptlint/rules/gates.py and promptlint/rules/__init__.py."
+    }
+  ],
+  "required_fixes": [],
+  "optional_improvements": [
+    "Add dedicated rule tests and a user-facing note so PL084 is better grounded before merge."
+  ],
+  "contract_violations": [],
+  "merge_risk": "low",
+  "judge_summary": "T001 delivered a narrow, registry-backed gate rule and stayed in scope. It should be merged with supporting tests and lightweight docs before the final refinery pass."
+}

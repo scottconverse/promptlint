@@ -1,0 +1,35 @@
+{
+  "artifacts_created": [
+    "tests/fixtures/workflow_prompt_weak.txt",
+    "tests/fixtures/workflow_prompt_clean.txt"
+  ],
+  "commands_run": [
+    {
+      "command": "python -m pytest tests/rules/test_gates.py",
+      "status": "failed",
+      "summary": "Initial run surfaced an over-broad false-positive test case; 15 tests passed and 1 PL084 guardrail assertion failed before the test input was narrowed."
+    },
+    {
+      "command": "python -m pytest tests/rules/test_gates.py",
+      "status": "passed",
+      "summary": "Targeted gate-rule suite passed after refining the non-workflow false-positive case; final result was 16 passed, 1 warning."
+    }
+  ],
+  "deviations_from_contract": [],
+  "files_changed": [
+    "tests/rules/test_gates.py",
+    "tests/fixtures/workflow_prompt_weak.txt",
+    "tests/fixtures/workflow_prompt_clean.txt"
+  ],
+  "human_review_needed": [
+    "Confirm the weak workflow fixture reflects the kinds of partial agent prompts the pilot most wants PL084 to catch."
+  ],
+  "next_recommended_step": "Run the broader test suite or additional fixture-driven lint coverage if the pilot wants more confidence around PL084 edge cases.",
+  "risks_or_concerns": [
+    "PL084 is still heuristic-driven, so prompts that mention multiple workflow terms outside a true worker contract may need more fixture coverage over time."
+  ],
+  "status": "completed",
+  "summary": "Added focused PL084 tests and two workflow prompt fixtures so the gate suite now proves weak workflow prompts with placeholders and missing contract elements are flagged, while a clean workflow prompt and obvious non-workflow text stay clean.",
+  "task_id": "T002",
+  "workflow_id": "workflow-prompt-quality-pilot"
+}

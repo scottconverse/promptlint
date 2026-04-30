@@ -1,0 +1,30 @@
+{
+  "task_id": "T003",
+  "workflow_id": "workflow-prompt-quality-pilot",
+  "verdict": "accept",
+  "score": 90,
+  "criteria_results": [
+    {
+      "criterion": "The rule is discoverable in promptlint's user-facing docs or CLI coverage.",
+      "status": "pass",
+      "evidence": "README.md now documents PL084, and tests/test_cli.py proves the rules command exposes PL084 in JSON output and under the gate category filter."
+    },
+    {
+      "criterion": "The update does not claim a broader redesign than the pilot actually delivered.",
+      "status": "pass",
+      "evidence": "The README addition is brief and describes PL084 as a narrow workflow prompt contract check rather than a larger orchestration system redesign."
+    },
+    {
+      "criterion": "Changes stay limited to README and CLI-facing tests.",
+      "status": "pass",
+      "evidence": "This slice only touched README.md and tests/test_cli.py."
+    }
+  ],
+  "required_fixes": [],
+  "optional_improvements": [
+    "If more workflow-focused rules land later, keep the README rule-count and rule-table copy in sync."
+  ],
+  "contract_violations": [],
+  "merge_risk": "low",
+  "judge_summary": "T003 closes the user-facing loop cleanly. It keeps the pilot honest by documenting the new rule and proving the CLI exposes it without broadening the repo surface."
+}

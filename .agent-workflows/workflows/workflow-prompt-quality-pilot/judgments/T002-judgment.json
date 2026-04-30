@@ -1,0 +1,30 @@
+{
+  "task_id": "T002",
+  "workflow_id": "workflow-prompt-quality-pilot",
+  "verdict": "accept_with_notes",
+  "score": 91,
+  "criteria_results": [
+    {
+      "criterion": "Tests clearly prove the target weak workflow prompts are caught.",
+      "status": "pass",
+      "evidence": "The weak workflow fixture triggers PL084 and the assertion checks that the violation message mentions unresolved placeholder text plus missing workflow contract elements."
+    },
+    {
+      "criterion": "Tests cover at least one clean prompt that should not trigger the new rule.",
+      "status": "pass",
+      "evidence": "The clean workflow fixture passes, and two non-workflow guardrail cases verify that ordinary TODO prose and lightweight task text do not spuriously trigger PL084."
+    },
+    {
+      "criterion": "Keep changes scoped to tests and fixtures.",
+      "status": "pass",
+      "evidence": "The slice only changed tests/rules/test_gates.py and two fixture files under tests/fixtures."
+    }
+  ],
+  "required_fixes": [],
+  "optional_improvements": [
+    "Add one or two more real-world fixtures from external orchestration repos if PL084 coverage expands beyond this pilot."
+  ],
+  "contract_violations": [],
+  "merge_risk": "low",
+  "judge_summary": "T002 stayed inside its lane and gives PL084 the minimum evidence needed for a controlled pilot. The first red test was resolved within the task and the final coverage is narrow but credible."
+}

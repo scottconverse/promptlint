@@ -1,0 +1,33 @@
+{
+  "artifacts_created": [],
+  "commands_run": [
+    {
+      "command": "python -m pytest tests/rules/test_gates.py",
+      "status": "passed",
+      "summary": "Existing gate-rule tests passed in the T001 worktree."
+    },
+    {
+      "command": "python -m promptlint.cli rules --format json",
+      "status": "passed",
+      "summary": "CLI rule listing succeeded and included PL084."
+    }
+  ],
+  "deviations_from_contract": [
+    "Did not add or modify tests because this task explicitly forbids editing tests; validation relied on the existing gate test suite and CLI discovery output."
+  ],
+  "files_changed": [
+    "promptlint/rules/gates.py",
+    "promptlint/rules/__init__.py"
+  ],
+  "human_review_needed": [
+    "Confirm the PL084 workflow-prompt heuristics are the desired balance before broader fixture coverage lands in the follow-up test task."
+  ],
+  "next_recommended_step": "Run T002 to add focused tests and fixtures for PL084 placeholder and workflow-contract coverage.",
+  "risks_or_concerns": [
+    "PL084 intentionally uses heuristic workflow-prompt detection and may need fixture tuning if real prompts use different contract wording."
+  ],
+  "status": "completed",
+  "summary": "Added PL084 workflow-contract-missing as a narrow gate rule for workflow-shaped agent prompts. The rule flags unresolved placeholder text and missing workflow contract elements, and it is registered through the normal built-in rule registry.",
+  "task_id": "T001",
+  "workflow_id": "workflow-prompt-quality-pilot"
+}

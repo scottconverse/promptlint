@@ -1,0 +1,62 @@
+task_id: T002
+workflow_id: workflow-prompt-quality-pilot
+title: Workflow prompt tests and fixtures
+role: worker
+objective: Add or improve promptlint tests and fixtures proving the workflow prompt
+  rule catches weak agent workflow prompts and avoids obvious false positives.
+background: This task depends on the rule direction from T001. Add the smallest
+  useful test coverage that proves the rule catches missing role, scope, forbidden
+  behavior, output artifact, validation expectations, stop or block conditions,
+  or unresolved placeholders where appropriate.
+allowed_paths:
+- tests
+forbidden_paths:
+- promptlint/rules
+- README.md
+required_context:
+- tests/rules/test_gates.py
+- tests/fixtures
+- output of T001
+- git worktree C:\Users\scott\OneDrive\Desktop\Claude\promptlint-worktrees\t002
+inputs:
+- Rule behavior chosen in T001
+- Existing gate-rule test style
+expected_outputs:
+- Narrow tests and any minimal fixtures needed to prove the workflow prompt rule works
+- Coverage for at least one false-positive-safe case
+output_schema:
+  task_id: T002
+  workflow_id: workflow-prompt-quality-pilot
+  status: blocked
+  summary: Populate this file after the worker run completes.
+  files_changed: []
+  commands_run: []
+  artifacts_created: []
+  deviations_from_contract: []
+  risks_or_concerns: []
+  human_review_needed: []
+  next_recommended_step: Run the worker prompt in a Codex worktree thread.
+acceptance_criteria:
+- Tests clearly prove the target weak workflow prompts are caught.
+- Tests cover at least one clean prompt that should not trigger the new rule.
+- Keep changes scoped to tests and fixtures.
+validation_commands:
+- python -m pytest tests/rules/test_gates.py
+constraints:
+- Work only in the T002 worktree.
+- Do not edit promptlint/rules in this task.
+forbidden_behaviors:
+- Do not broaden scope.
+- Do not modify forbidden paths.
+ - Do not rewrite unrelated test suites.
+estimated_complexity: medium
+parallel_safe: false
+depends_on:
+- T001
+failure_codes:
+- missing_context
+- validation_failed
+- blocked_on_dependency
+ - integration_mismatch
+handoff_instructions: Write the result file, summarize any deviations, and hand off
+  to the judge.

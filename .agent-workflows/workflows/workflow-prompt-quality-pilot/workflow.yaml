@@ -1,0 +1,44 @@
+workflow_id: workflow-prompt-quality-pilot
+title: Workflow Prompt Quality Pilot
+goal: Add a narrow prompt-quality lint improvement for AI-agent workflow prompts in
+  promptlint. Catch or improve coverage for unresolved placeholder text and missing
+  workflow prompt contract elements such as role definition, allowed scope, forbidden
+  behavior, required output path or artifact, validation expectations, and stop or
+  block conditions, without redesigning promptlint.
+created_at: '2026-04-30T05:34:02.500928Z'
+status: complete
+operator: Scott
+repo_root: C:\Users\scott\OneDrive\Desktop\Claude\promptlint
+base_branch: main
+constraints:
+- Keep the improvement narrow and local to AI-agent workflow prompt quality.
+- Use the CWO workflow artifacts as the source of truth for planning, worker execution, judging, and refinement.
+- Use isolated git worktrees for worker execution.
+non_goals:
+- Do not redesign promptlint's rule architecture or CLI model.
+- Do not add a daemon, dashboard, database, API server, MCP server, auto-merge, auto-push, or auto-release flow.
+- Do not take broad dependency changes unless a blocker makes them unavoidable.
+tasks:
+- T001
+- T002
+- T003
+dependencies:
+  T001: []
+  T002:
+  - T001
+  T003:
+  - T001
+success_criteria:
+- A small real improvement lands in promptlint for weak AI-agent workflow prompts.
+- The improvement is implemented through 2-4 bounded worker tasks with results, judgments, and a refinery report.
+- Promptlint validation runs successfully or any validation limits are explicitly documented.
+validation_commands:
+- python -m pytest
+- python -m promptlint.cli rules --format json
+- python -m promptlint.cli check tests/fixtures/clean.yaml
+risks:
+- Existing promptlint rules may overlap partially with the pilot rule, so scope must stay narrow.
+- Worktree execution may add integration friction if worker slices touch the same rule module.
+- The external pilot should test CWO usability, so awkward artifacts or prompt wording must be recorded rather than hidden.
+notes: External pilot against the promptlint repository using git worktrees under
+  C:\Users\scott\OneDrive\Desktop\Claude\promptlint-worktrees.

@@ -1,0 +1,31 @@
+{
+  "artifacts_created": [],
+  "commands_run": [
+    {
+      "command": "python -m pytest tests/test_cli.py",
+      "status": "passed",
+      "summary": "CLI test suite passed in the T003 worktree, including new coverage that PL084 appears in JSON rule listings and the gate category filter."
+    },
+    {
+      "command": "python -m promptlint.cli rules --format json",
+      "status": "passed",
+      "summary": "Rule discovery output succeeded and listed PL084 as workflow-contract-missing in the gate category."
+    }
+  ],
+  "deviations_from_contract": [],
+  "files_changed": [
+    "README.md",
+    "tests/test_cli.py"
+  ],
+  "human_review_needed": [
+    "Confirm the README rule counts and gate-category examples stay in sync if additional rules land before release."
+  ],
+  "next_recommended_step": "Keep the rules command output stable as more workflow-focused rules land so downstream automation can rely on PL084 discoverability.",
+  "risks_or_concerns": [
+    "This task intentionally did not broaden product behavior beyond docs and minimal CLI discoverability coverage."
+  ],
+  "status": "completed",
+  "summary": "Updated the user-facing README to surface the new PL084 workflow prompt contract rule and added focused CLI coverage proving the rules command exposes PL084 in JSON output and under the gate category filter.",
+  "task_id": "T003",
+  "workflow_id": "workflow-prompt-quality-pilot"
+}
