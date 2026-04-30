@@ -51,7 +51,7 @@ FROM python:3.13-slim
 WORKDIR /app
 COPY . /app
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -e .[test] 2>/dev/null || pip install --no-cache-dir -e .
+    pip install --no-cache-dir -e .[dev] 2>/dev/null || pip install --no-cache-dir -e .[test] 2>/dev/null || pip install --no-cache-dir -e . pytest
 EOF
 
   echo "--- docker build ---"
