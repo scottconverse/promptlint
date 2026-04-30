@@ -1,0 +1,235 @@
+F401 [*] `promptlint.models.Severity` imported but unused
+  --> promptlint\cli.py:27:31
+   |
+25 | from promptlint.core.parser import parse_file, parse_pipeline_manifest, parse_stdin
+26 | from promptlint.core.reporter import report
+27 | from promptlint.models import Severity
+   |                               ^^^^^^^^
+28 |
+29 | # ---------------------------------------------------------------------------
+   |
+help: Remove unused import: `promptlint.models.Severity`
+
+F401 [*] `promptlint.rules.base.BasePipelineRule` imported but unused
+   --> promptlint\cli.py:533:39
+    |
+531 | ) -> None:
+532 |     """List all available lint rules."""
+533 |     from promptlint.rules.base import BasePipelineRule, BaseRule
+    |                                       ^^^^^^^^^^^^^^^^
+534 |
+535 |     all_file_rules = get_all_rules()
+    |
+help: Remove unused import
+
+F401 [*] `promptlint.rules.base.BaseRule` imported but unused
+   --> promptlint\cli.py:533:57
+    |
+531 | ) -> None:
+532 |     """List all available lint rules."""
+533 |     from promptlint.rules.base import BasePipelineRule, BaseRule
+    |                                                         ^^^^^^^^
+534 |
+535 |     all_file_rules = get_all_rules()
+    |
+help: Remove unused import
+
+F401 [*] `prompttools_core.profiles.BUILTIN_PROFILES` imported but unused
+  --> promptlint\config.py:18:39
+   |
+17 | from promptlint.models import LintConfig
+18 | from prompttools_core.profiles import BUILTIN_PROFILES, get_profile
+   |                                       ^^^^^^^^^^^^^^^^
+19 |
+20 | _CONFIG_FILENAME = ".promptlint.yaml"
+   |
+help: Remove unused import: `prompttools_core.profiles.BUILTIN_PROFILES`
+
+F401 [*] `hashlib` imported but unused
+  --> promptlint\core\cache.py:9:8
+   |
+ 7 | from __future__ import annotations
+ 8 |
+ 9 | import hashlib
+   |        ^^^^^^^
+10 | import shutil
+11 | from pathlib import Path
+   |
+help: Remove unused import: `hashlib`
+
+F401 [*] `shutil` imported but unused
+  --> promptlint\core\cache.py:10:8
+   |
+ 9 | import hashlib
+10 | import shutil
+   |        ^^^^^^
+11 | from pathlib import Path
+12 | from typing import Any
+   |
+help: Remove unused import: `shutil`
+
+F401 [*] `typing.Any` imported but unused
+  --> promptlint\core\cache.py:12:20
+   |
+10 | import shutil
+11 | from pathlib import Path
+12 | from typing import Any
+   |                    ^^^
+13 |
+14 | from prompttools_core.cache import PromptCache
+   |
+help: Remove unused import: `typing.Any`
+
+F401 [*] `typing.Any` imported but unused
+  --> promptlint\core\engine.py:12:20
+   |
+10 | import pkgutil
+11 | from pathlib import Path
+12 | from typing import Any
+   |                    ^^^
+13 |
+14 | import promptlint.rules as _rules_pkg
+   |
+help: Remove unused import: `typing.Any`
+
+F401 [*] `promptlint.models.LintConfig` imported but unused
+  --> promptlint\core\fixer.py:12:31
+   |
+10 | from typing import TYPE_CHECKING
+11 |
+12 | from promptlint.models import LintConfig, LintViolation, PromptFile
+   |                               ^^^^^^^^^^
+13 | from promptlint.rules.base import BaseRule
+   |
+help: Remove unused import
+
+F401 [*] `promptlint.models.PromptFile` imported but unused
+  --> promptlint\core\fixer.py:12:58
+   |
+10 | from typing import TYPE_CHECKING
+11 |
+12 | from promptlint.models import LintConfig, LintViolation, PromptFile
+   |                                                          ^^^^^^^^^^
+13 | from promptlint.rules.base import BaseRule
+   |
+help: Remove unused import
+
+F541 [*] f-string without any placeholders
+  --> promptlint\core\fixer.py:83:38
+   |
+81 |             if str(file_path) == "-":
+82 |                 # Cannot fix stdin content
+83 |                 summary_lines.append(f"  Skipped stdin (-): cannot write back fixes.")
+   |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+84 |                 continue
+85 |             current_content = file_path.read_text(encoding="utf-8")
+   |
+help: Remove extraneous `f` prefix
+
+F841 Local variable `current_content` is assigned to but never used
+  --> promptlint\core\fixer.py:85:13
+   |
+83 |                 summary_lines.append(f"  Skipped stdin (-): cannot write back fixes.")
+84 |                 continue
+85 |             current_content = file_path.read_text(encoding="utf-8")
+   |             ^^^^^^^^^^^^^^^
+86 |         except (OSError, IOError) as exc:
+87 |             summary_lines.append(f"  Skipped {file_path}: {exc}")
+   |
+help: Remove assignment to unused variable `current_content`
+
+F401 [*] `pathlib.Path` imported but unused
+  --> promptlint\core\reporter.py:11:21
+   |
+ 9 | import json
+10 | from collections import Counter
+11 | from pathlib import Path
+   |                     ^^^^
+12 |
+13 | from promptlint.models import LintViolation, Severity
+   |
+help: Remove unused import: `pathlib.Path`
+
+F401 [*] `typing.Any` imported but unused
+  --> promptlint\models.py:11:20
+   |
+ 9 | from enum import Enum
+10 | from pathlib import Path
+11 | from typing import Any, Optional
+   |                    ^^^
+12 |
+13 | from pydantic import BaseModel, Field
+   |
+help: Remove unused import: `typing.Any`
+
+F401 [*] `typing.Optional` imported but unused
+  --> promptlint\profiles\models.py:8:20
+   |
+ 6 | from __future__ import annotations
+ 7 |
+ 8 | from typing import Optional
+   |                    ^^^^^^^^
+ 9 |
+10 | # Re-export from prompttools-core
+   |
+help: Remove unused import: `typing.Optional`
+
+F401 `typing.Union` imported but unused
+  --> promptlint\rules\__init__.py:9:20
+   |
+ 7 | from __future__ import annotations
+ 8 |
+ 9 | from typing import Union
+   |                    ^^^^^
+10 |
+11 | from promptlint.rules.base import BasePipelineRule, BaseRule
+   |
+help: Remove unused import: `typing.Union`
+
+F841 Local variable `stage_names` is assigned to but never used
+  --> promptlint\rules\pipeline.py:46:9
+   |
+44 |     ) -> list[LintViolation]:
+45 |         violations: list[LintViolation] = []
+46 |         stage_names = {s.name for s in pipeline.stages}
+   |         ^^^^^^^^^^^
+47 |
+48 |         for i, stage in enumerate(pipeline.stages):
+   |
+help: Remove assignment to unused variable `stage_names`
+
+F401 [*] `collections.Counter` imported but unused
+ --> promptlint\rules\system_prompt.py:6:25
+  |
+5 | import re
+6 | from collections import Counter
+  |                         ^^^^^^^
+7 |
+8 | from promptlint.models import LintConfig, LintViolation, PromptFile, Severity
+  |
+help: Remove unused import: `collections.Counter`
+
+F401 [*] `collections.Counter` imported but unused
+ --> promptlint\rules\variables.py:6:25
+  |
+5 | import re
+6 | from collections import Counter
+  |                         ^^^^^^^
+7 |
+8 | from promptlint.models import LintConfig, LintViolation, PromptFile, Severity
+  |
+help: Remove unused import: `collections.Counter`
+
+F841 Local variable `summary` is assigned to but never used
+  --> tests\test_fixer.py:84:9
+   |
+83 |         rules = get_all_rules(config)
+84 |         summary = apply_fixes(violations, rules, dry_run=False)
+   |         ^^^^^^^
+85 |         fixed = fp.read_text(encoding="utf-8")
+86 |         assert "{{name}}" in fixed
+   |
+help: Remove assignment to unused variable `summary`
+
+Found 20 errors.
+[*] 16 fixable with the `--fix` option (3 hidden fixes can be enabled with the `--unsafe-fixes` option).

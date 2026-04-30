@@ -1,0 +1,22 @@
+promptlint\utils\tokenizers.py:9: error: Skipping analyzing "prompttools_core.tokenizer": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\profiles\models.py:11: error: Skipping analyzing "prompttools_core.profiles": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\profiles\models.py:15: error: Skipping analyzing "prompttools_core.models": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\core\parser.py:11: error: Skipping analyzing "prompttools_core.parser": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\core\parser.py:16: error: Skipping analyzing "prompttools_core.formats._variables": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\core\parser.py:19: error: Skipping analyzing "prompttools_core.models": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\core\cache.py:14: error: Skipping analyzing "prompttools_core.cache": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\core\cache.py:14: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+promptlint\core\cache.py:23: error: Returning Any from function declared to return "str"  [no-any-return]
+promptlint\core\cache.py:46: error: Returning Any from function declared to return "Optional[int]"  [no-any-return]
+promptlint\models.py:16: error: Skipping analyzing "prompttools_core.models": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\config.py:15: error: Library stubs not installed for "yaml"  [import-untyped]
+promptlint\config.py:18: error: Skipping analyzing "prompttools_core.profiles": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\rules\system_prompt.py:204: error: Library stubs not installed for "yaml"  [import-untyped]
+promptlint\rules\system_prompt.py:204: note: Hint: "python3 -m pip install types-PyYAML"
+promptlint\rules\system_prompt.py:204: note: (or run "mypy --install-types" to install all missing stub packages)
+promptlint\rules\system_prompt.py:210: error: Returning Any from function declared to return "Optional[str]"  [no-any-return]
+promptlint\plugins\loader.py:13: error: Skipping analyzing "prompttools_core.plugins": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+promptlint\core\engine.py:105: error: Module has no attribute "util"  [attr-defined]
+promptlint\core\engine.py:109: error: Module has no attribute "util"  [attr-defined]
+promptlint\cli.py:550: error: Incompatible types in assignment (expression has type "BasePipelineRule", variable has type "BaseRule")  [assignment]
+Found 18 errors in 10 files (checked 28 source files)

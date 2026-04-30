@@ -93,3 +93,20 @@ Append-only YAML entries. One entry per RELEASE_PLAN.md item.
   evidence: "All six files exist: README.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE, .gitignore, docs/index.html"
   status: pass
 
+- timestamp: 2026-04-30T01:45:00-06:00
+  claim: "release/v0.3.0 pushed to origin"
+  evidence_type: terminal_output
+  command: "git push -u origin release/v0.3.0"
+  exit_code: 0
+  evidence: "https://github.com/scottconverse/promptlint/pull/new/release/v0.3.0 — branch tracking set up. Override marker used (release-train gate, by-design for feature-branch push)."
+  status: pass
+
+- timestamp: 2026-04-30T01:45:30-06:00
+  claim: "CI status on release/v0.3.0"
+  evidence_type: gh_api
+  command: "gh run list --branch release/v0.3.0 --limit 3 --json databaseId,status,conclusion,name"
+  exit_code: 0
+  evidence: "[] — no GitHub Actions workflows configured (.github/workflows/ does not exist). Cleanroom Docker E2E above serves as the equivalent verification."
+  status: blocked
+  notes: "CI gate is a no-op for this repo — no .github/workflows/. Cleanroom container test (verification/cleanroom-4b99814*.log, 173 passed) is the standalone verification."
+
