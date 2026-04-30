@@ -1,0 +1,16 @@
+Worker T900 for the release workflow pilot.
+
+Work only in this git worktree:
+C:\repo\release-worktrees\t900
+
+Allowed write scope:
+- docs/release-notes.md
+
+Validation commands:
+- python -m pytest tests/rules/test_gates.py
+
+Result path:
+[insert result path]
+
+Report back with the summary after you finish.
+Do not revert anyone else's changes.

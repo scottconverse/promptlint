@@ -83,6 +83,7 @@ from promptlint.rules.gates import (
     GateNoEnforcementRule,
     GateNoFallbackRule,
     OutputSchemaMissingRule,
+    WorkflowContractMissingRule,
 )
 
 # Tokenizer warning rules
@@ -142,6 +143,7 @@ __all__ = [
     "GateNoFallbackRule",
     "OutputSchemaMissingRule",
     "ClaimNoEvidenceGateRule",
+    "WorkflowContractMissingRule",
     # Tokenizer warnings
     "ApproximateTokenizerWarning",
     # Discovery
@@ -194,11 +196,12 @@ def get_all_rules() -> list[BaseRule]:
         CompetingInstructionsRule(),
         NoExamplesRule(),
         WallOfTextRule(),
-        # PL080-PL083
+        # PL080-PL084
         GateNoEnforcementRule(),
         GateNoFallbackRule(),
         OutputSchemaMissingRule(),
         ClaimNoEvidenceGateRule(),
+        WorkflowContractMissingRule(),
         # PL090
         ApproximateTokenizerWarning(),
     ]

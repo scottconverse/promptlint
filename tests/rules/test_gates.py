@@ -3,13 +3,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from promptlint.core.parser import parse_file
 from promptlint.models import LintConfig, Message, PromptFile, PromptFormat
 from promptlint.rules.gates import (
     ClaimNoEvidenceGateRule,
     GateNoEnforcementRule,
     GateNoFallbackRule,
     OutputSchemaMissingRule,
+    WorkflowContractMissingRule,
 )
+
+FIXTURES_DIR = Path(__file__).resolve().parents[1] / "fixtures"
 
 
 def _make_pf(content: str) -> PromptFile:
@@ -19,6 +23,10 @@ def _make_pf(content: str) -> PromptFile:
         raw_content=content,
         messages=[Message(role="user", content=content, line_start=1)],
     )
+
+
+def _parse_fixture(name: str) -> PromptFile:
+    return parse_file(FIXTURES_DIR / name)
 
 
 class TestPL080GateNoEnforcement:
@@ -99,4 +107,31 @@ class TestPL083ClaimNoEvidence:
     def test_clean_no_claims(self) -> None:
         pf = _make_pf("List the colors of the rainbow.")
         violations = ClaimNoEvidenceGateRule().check(pf, LintConfig())
+        assert len(violations) == 0
+
+
+class TestPL084WorkflowContractMissing:
+    def test_fires_on_weak_workflow_prompt_fixture(self) -> None:
+        pf = _parse_fixture("workflow_prompt_weak.txt")
+        violations = WorkflowContractMissingRule().check(pf, LintConfig())
+        assert len(violations) == 1
+        assert violations[0].rule_id == "PL084"
+        assert "placeholder" in violations[0].message.lower()
+        assert "missing key contract elements" in violations[0].message.lower()
+
+    def test_clean_workflow_prompt_fixture(self) -> None:
+        pf = _parse_fixture("workflow_prompt_clean.txt")
+        violations = WorkflowContractMissingRule().check(pf, LintConfig())
+        assert len(violations) == 0
+
+    def test_clean_non_workflow_todo_text(self) -> None:
+        pf = _make_pf("TODO: tighten the outline before the next draft review.")
+        violations = WorkflowContractMissingRule().check(pf, LintConfig())
+        assert len(violations) == 0
+
+    def test_clean_task_text_without_contract_signals(self) -> None:
+        pf = _make_pf(
+            "Explain how prior validation commands were documented in the release notes."
+        )
+        violations = WorkflowContractMissingRule().check(pf, LintConfig())
         assert len(violations) == 0

@@ -1,0 +1,19 @@
+Worker T901 for the release workflow pilot.
+Role: test-only workflow worker validating prompt quality.
+
+Work only in this git worktree:
+C:\repo\release-worktrees\t901
+
+Allowed write scope:
+- tests/rules/test_gates.py
+- tests/fixtures/workflow_prompt_clean.txt
+
+Required artifact:
+Write the result file to C:\repo\.agent-workflows\results\T901-result.json
+
+Validation expectations:
+- Run `python -m pytest tests/rules/test_gates.py`
+- Report the tests you ran and their results
+
+Stop if the requested changes require edits outside the allowed write scope.
+Do not revert anyone else's changes.

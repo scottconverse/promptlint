@@ -119,12 +119,24 @@ class TestRulesCommand:
         assert isinstance(data, list)
         ids = [e["rule_id"] for e in data]
         assert "PL001" in ids
+        assert "PL084" in ids
+
+        workflow_rule = next(e for e in data if e["rule_id"] == "PL084")
+        assert workflow_rule["name"] == "workflow-contract-missing"
+        assert workflow_rule["category"] == "gate"
 
     def test_rules_category_filter(self) -> None:
         result = runner.invoke(app, ["rules", "--format", "json", "--category", "token"])
         assert result.exit_code == 0
         data = json.loads(result.output)
         assert all(e["category"] == "token" for e in data)
+
+    def test_rules_gate_category_includes_workflow_rule(self) -> None:
+        result = runner.invoke(app, ["rules", "--format", "json", "--category", "gate"])
+        assert result.exit_code == 0
+        data = json.loads(result.output)
+        ids = [e["rule_id"] for e in data]
+        assert "PL084" in ids
 
 
 # ---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 # promptlint — Static analysis for LLM prompts
 
-The ESLint for prompts. 34 rules catch ambiguity, security risks, bloat, and structural issues before your prompts reach production.
+The ESLint for prompts. 35 rules catch ambiguity, security risks, bloat, and structural issues before your prompts reach production.
 
 ```bash
 pip install promptlint-ai
@@ -10,7 +10,7 @@ promptlint check ./prompts/
 ## Why promptlint?
 
 Your prompts are code. They deserve the same quality gates:
-- **34 built-in rules** across 9 categories (token budget, security, hallucination risk, variables, formatting, pipeline integrity, gates, smells, system prompt)
+- **35 built-in rules** across 9 categories (token budget, security, hallucination risk, variables, formatting, pipeline integrity, gates, smells, system prompt)
 - **Auto-fix** for formatting issues (`--fix`)
 - **CI-ready** exit codes and output formats (text, JSON, GitHub Actions annotations)
 - **Zero config** — works out of the box, customize with `.promptlint.yaml`
@@ -37,6 +37,8 @@ promptlint check --format github ./prompts/
 
 ## Rules
 
+Use `promptlint rules --format json` to list every built-in rule and confirm the exact rule IDs available in your install.
+
 | Category | Rules | Examples |
 |----------|-------|---------|
 | Token Budget | PL001-003 | Warn/error on token limits, stop-word density |
@@ -47,7 +49,9 @@ promptlint check --format github ./prompts/
 | Hallucination | PL050-054 | Asks for URLs/citations, fabrication-prone tasks |
 | Security | PL060-063 | PII, API keys (OpenAI, Anthropic, Groq, GitLab), injection |
 | Smells | PL070-074 | Buried instructions, competing instructions, wall of text |
-| Gates | PL080-083 | Missing enforcement, no fallback, no output schema |
+| Gates | PL080-084 | Missing enforcement, no fallback, no output schema, incomplete workflow contracts |
+
+`PL084` (`workflow-contract-missing`) flags workflow-style prompts that still contain placeholders or omit key worker contract details like task scope, validation steps, or reporting expectations.
 
 ## Part of the prompttools suite
 

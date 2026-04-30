@@ -1,4 +1,4 @@
-"""Gate/constraint rules: PL080, PL081, PL082, PL083."""
+"""Gate/constraint rules: PL080, PL081, PL082, PL083, PL084."""
 
 from __future__ import annotations
 
@@ -68,6 +68,45 @@ _EVIDENCE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\bconfidence\b", re.IGNORECASE),
     re.compile(r"\bverified\b", re.IGNORECASE),
     re.compile(r"\bif unsure\b", re.IGNORECASE),
+]
+
+# ---------------------------------------------------------------------------
+# PL084: Workflow prompt contract completeness
+# ---------------------------------------------------------------------------
+_WORKFLOW_PROMPT_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r"\bworker\b", re.IGNORECASE),
+    re.compile(r"\btask (id|title)\b", re.IGNORECASE),
+    re.compile(r"\bworktree\b", re.IGNORECASE),
+    re.compile(r"\ballowed (write )?scope\b", re.IGNORECASE),
+    re.compile(r"\bvalidation (commands|expectations)\b", re.IGNORECASE),
+    re.compile(r"\b(result path|report back with)\b", re.IGNORECASE),
+]
+
+_WORKFLOW_CONTRACT_PATTERNS: dict[str, re.Pattern[str]] = {
+    "role": re.compile(r"\b(role|you are a|worker only)\b", re.IGNORECASE),
+    "scope": re.compile(
+        r"\b(allowed (paths|scope)|write scope|work only in this git worktree)\b",
+        re.IGNORECASE,
+    ),
+    "output": re.compile(
+        r"\b(result path|write the result file|report back with|required artifact)\b",
+        re.IGNORECASE,
+    ),
+    "validation": re.compile(
+        r"\b(validation (commands|expectations)|tests? (you )?ran)\b",
+        re.IGNORECASE,
+    ),
+    "stop_conditions": re.compile(
+        r"\b(stop or block conditions|stop if|blocked result|do not revert)\b",
+        re.IGNORECASE,
+    ),
+}
+
+_WORKFLOW_PLACEHOLDER_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r"\b(TODO|TBD|FIXME|XXX)\b", re.IGNORECASE),
+    re.compile(r"\[(?:insert|fill in|todo|tbd)[^\]]*\]", re.IGNORECASE),
+    re.compile(r"<(?:insert|fill[_ -]?in|todo|tbd)[^>]*>", re.IGNORECASE),
+    re.compile(r"\bpopulate this\b", re.IGNORECASE),
 ]
 
 
@@ -230,6 +269,74 @@ class ClaimNoEvidenceGateRule(BaseRule):
                     "recommendation with reasoning' or 'Express confidence "
                     "levels for each claim')."
                 ),
+                path=prompt_file.path,
+                line=None,
+                rule_name=self.name,
+                fixable=False,
+            ),
+        ]
+
+
+class WorkflowContractMissingRule(BaseRule):
+    """PL084: Workflow-like prompts contain placeholders or omit key contract elements."""
+
+    rule_id = "PL084"
+    name = "workflow-contract-missing"
+    default_severity = Severity.WARNING
+
+    def check(self, prompt_file: PromptFile, config: LintConfig) -> list[LintViolation]:
+        all_text = "\n".join(msg.content for msg in prompt_file.messages)
+
+        workflow_signal_count = sum(
+            1 for pattern in _WORKFLOW_PROMPT_PATTERNS if pattern.search(all_text)
+        )
+        if workflow_signal_count < 2:
+            return []
+
+        placeholder_hits = [
+            match.group(0)
+            for pattern in _WORKFLOW_PLACEHOLDER_PATTERNS
+            for match in pattern.finditer(all_text)
+        ]
+        missing_elements = [
+            name
+            for name, pattern in _WORKFLOW_CONTRACT_PATTERNS.items()
+            if not pattern.search(all_text)
+        ]
+
+        if not placeholder_hits and not missing_elements:
+            return []
+
+        message_parts: list[str] = []
+        suggestion_parts: list[str] = []
+
+        if placeholder_hits:
+            unique_hits = sorted(set(placeholder_hits))
+            preview = ", ".join(f'"{hit}"' for hit in unique_hits[:3])
+            message_parts.append(
+                f"Workflow prompt contains unresolved placeholder text ({preview})."
+            )
+            suggestion_parts.append(
+                "Replace placeholders with concrete workflow instructions before use."
+            )
+
+        if missing_elements:
+            message_parts.append(
+                "Workflow prompt is missing key contract elements: "
+                + ", ".join(missing_elements)
+                + "."
+            )
+            suggestion_parts.append(
+                "Add the missing workflow contract details so the worker has an explicit "
+                "role, scope, output artifact, validation expectations, and stop conditions."
+            )
+
+        return [
+            LintViolation(
+                rule_id=self.rule_id,
+                severity=self.default_severity,
+                message=" ".join(message_parts),
+                suggestion=" ".join(suggestion_parts),
                 path=prompt_file.path,
                 line=None,
                 rule_name=self.name,
