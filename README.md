@@ -1,5 +1,7 @@
 # promptlint — Static analysis for LLM prompts
 
+> **promptlint is now distributed as part of [prompttools](https://github.com/scottconverse/prompttools).** This standalone package remains for users who only want the linter.
+
 The ESLint for prompts. 35 rules catch ambiguity, security risks, bloat, and structural issues before your prompts reach production.
 
 ```bash
